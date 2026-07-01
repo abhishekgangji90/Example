@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Expense Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">ST</span>
+        <div>
+          <p>SmartTrack</p>
+          <span>Expense control</span>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="Primary">
+        <button class="nav-item active" type="button" title="Dashboard">
+          <span aria-hidden="true">#</span>
+          Dashboard
+        </button>
+        <button class="nav-item" type="button" title="Budgets">
+          <span aria-hidden="true">$</span>
+          Budgets
+        </button>
+        <button class="nav-item" type="button" title="Insights">
+          <span aria-hidden="true">^</span>
+          Insights
+        </button>
+      </nav>
+
+      <section class="insight-panel">
+        <p class="eyebrow">Smart hint</p>
+        <h2 id="smartHintTitle">Track every small spend.</h2>
+        <p id="smartHintText">Add today's expenses to unlock spending insights.</p>
+      </section>
+    </aside>
+
+    <section class="content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Personal finance</p>
+          <h1>Expense Tracker</h1>
+        </div>
+        <div class="month-control">
+          <label for="monthFilter">Month</label>
+          <input id="monthFilter" type="month">
+        </div>
+      </header>
+
+      <section class="summary-grid" aria-label="Expense summary">
+        <article class="metric-card income">
+          <span class="metric-icon" aria-hidden="true">+</span>
+          <p>Total income</p>
+          <strong id="incomeTotal">$0</strong>
+        </article>
+        <article class="metric-card expense">
+          <span class="metric-icon" aria-hidden="true">&minus;</span>
+          <p>Total expense</p>
+          <strong id="expenseTotal">$0</strong>
+        </article>
+        <article class="metric-card balance">
+          <span class="metric-icon" aria-hidden="true">=</span>
+          <p>Balance</p>
+          <strong id="balanceTotal">$0</strong>
+        </article>
+        <article class="metric-card budget">
+          <span class="metric-icon" aria-hidden="true">%</span>
+          <p>Budget used</p>
+          <strong id="budgetUsed">0%</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="left-column">
+          <section class="panel transaction-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">New record</p>
+                <h2>Add transaction</h2>
+              </div>
+            </div>
+
+            <form id="transactionForm" class="transaction-form">
+              <div class="segmented" role="group" aria-label="Transaction type">
+                <input id="typeExpense" name="type" type="radio" value="expense" checked>
+                <label for="typeExpense">Expense</label>
+                <input id="typeIncome" name="type" type="radio" value="income">
+                <label for="typeIncome">Income</label>
+              </div>
+
+              <label>
+                Description
+                <input id="description" type="text" placeholder="Coffee, rent, salary" required>
+              </label>
+
+              <div class="form-row">
+                <label>
+                  Amount
+                  <input id="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                </label>
+                <label>
+                  Date
+                  <input id="date" type="date" required>
+                </label>
+              </div>
+
+              <label>
+                Category
+                <select id="category" required>
+                  <option value="Food">Food</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Health">Health</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Salary">Salary</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+
+              <button class="primary-button" type="submit">Add transaction</button>
+            </form>
+          </section>
+
+          <section class="panel budget-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Monthly limit</p>
+                <h2>Budget tracker</h2>
+              </div>
+              <button id="saveBudget" class="icon-button" type="button" title="Save budget">&#10003;</button>
+            </div>
+            <label>
+              Budget amount
+              <input id="budgetInput" type="number" min="0" step="50" placeholder="Set monthly budget">
+            </label>
+            <div class="budget-bar" aria-label="Budget progress">
+              <span id="budgetProgress"></span>
+            </div>
+            <p id="budgetStatus" class="status-text">Set a monthly budget to monitor spending.</p>
+          </section>
+        </div>
+
+        <div class="right-column">
+          <section class="panel chart-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Categories</p>
+                <h2>Spending breakdown</h2>
+              </div>
+            </div>
+            <div id="categoryChart" class="category-chart" aria-label="Spending by category"></div>
+          </section>
+
+          <section class="panel history-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Activity</p>
+                <h2>Transactions</h2>
+              </div>
+              <button id="clearAll" class="ghost-button" type="button">Clear all</button>
+            </div>
+
+            <div class="filters">
+              <input id="searchInput" type="search" placeholder="Search transaction">
+              <select id="typeFilter" aria-label="Filter by type">
+                <option value="all">All types</option>
+                <option value="expense">Expenses</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+
+            <ul id="transactionList" class="transaction-list"></ul>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <template id="transactionTemplate">
+    <li class="transaction-item">
+      <div class="transaction-main">
+        <span class="category-dot" aria-hidden="true"></span>
+        <div>
+          <strong class="item-description"></strong>
+          <p class="item-meta"></p>
+        </div>
+      </div>
+      <div class="transaction-amount">
+        <strong></strong>
+        <button type="button" title="Delete transaction">&times;</button>
+      </div>
+    </li>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
